@@ -1,4 +1,4 @@
-// db schema for users
+// db schema for blogs
 /* 
 
     blogs: {
@@ -109,7 +109,7 @@ async function deleteBlogById(blog_id, user_id) {
 async function updateBlogById({id, user_id, title, content, created_at, updated_at}) {
     // go to blog table where id == id
     // return json value of blog
-    // After insert/update/delete returns the affected row immediately
+    // RETURNING * : After insert/update/delete returns the affected row immediately
      try {
         const result = await pool.query(
             `
