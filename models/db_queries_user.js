@@ -57,8 +57,27 @@ async function deleteUser(user_id) {
     }
 }
 
+
+async function getUserByEmail(email) {
+    try{
+        const result = await pool.query(
+            `
+            SELECT * FROM USERS
+            WHERE email=$1
+            `,
+            [email]
+        );
+
+        return result.rows[0];
+    }catch(e){
+        console.log(e);
+        throw new Error("error on getting user by id:", e);
+    }
+}
+
 module.exports = {
     createNewUser,
     deleteUser,
     getUser,
+    getUserByEmail,
 }
