@@ -9,7 +9,7 @@
 const { pool } = require("../db/pg_setup");
 
 // save user
-async function createUser({user_id, name, email, password}) {
+async function createNewUser({user_id, name, email, password}) {
     try{
         const result = await pool.query(
             `
@@ -55,4 +55,10 @@ async function deleteUser(user_id) {
     }catch(e){
         throw new Error(`error on creating user on db: ${e}`);
     }
+}
+
+module.exports = {
+    createNewUser,
+    deleteUser,
+    getUser,
 }

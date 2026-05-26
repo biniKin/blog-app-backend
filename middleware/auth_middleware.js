@@ -1,1 +1,1 @@
-// handles auth
+// handles auth with JWT
