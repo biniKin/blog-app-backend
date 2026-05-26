@@ -30,7 +30,8 @@ const signUp = async(req, res) => {
         const token = jwt.sign({uid: user_id},process.env.JWT_SECRET, {expiresIn: "1d"});
 
         res.status(200).json({
-            message: "Account created sucessfully!"
+            message: "Account created sucessfully!",
+            token,
         });
     }catch(e){
         console.log(`error on account creation: ${e}`);
