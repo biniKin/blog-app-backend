@@ -30,12 +30,12 @@ const createPost = async(req, res)=>{
             content,
         }
         const result = await createBlog(new_blog_post);
-        // if(!result){
-        //     console.log(result);
-        //     return res.status(400).json({
-        //         msg: 'error on creating blog',
-        //     });
-        // }
+        if(!result){
+            console.log(result);
+            return res.status(404).json({
+                msg: 'error on creating blog',
+            });
+        }
         res.status(201).json({
             msg: "post created",
             data: result
@@ -51,11 +51,11 @@ const createPost = async(req, res)=>{
 const fetchPost = async(req, res)=>{
     try{
         const result = await fetchBlogs();
-        // if(!result){
-        //     res.status(400).json({
-        //         msg: 'error on creating blog',
-        //     });
-        // }
+        if(!result){
+            res.status(404).json({
+                msg: 'post not found',
+            });
+        }
         res.status(200).json({
             msg: "post fetched",
             data: result
@@ -75,8 +75,8 @@ const fetchPostById = async(req, res) =>{
         const blog_id = req.param.id
         const result = await fetchBlogById(blog_id, user_id);
         if(!result){
-            res.status(400).json({
-                msg: 'error on creating blog',
+            res.status(404).json({
+                msg: 'Post not found.',
             });
         }
         res.status(200).json({
@@ -98,8 +98,8 @@ const deletePost = async(req, res) => {
         const user_id = req.user.uid;
         const result = await deleteBlogById(blog_id, user_id);
         if(!result){
-            res.status(400).json({
-                msg: 'error on deleting post',
+            res.status(404).json({
+                msg: 'Post not found or already deleted.',
             });
         }
         res.status(200).json({
@@ -124,8 +124,8 @@ const updatePost = async(req, res)=>{
         }
         const result = await updateBlogById(new_post);
         if(!result){
-            res.status(400).json({
-                msg: 'error on creating blog',
+            res.status(404).json({
+                msg: 'Post not found.',
             });
         }
         res.status(200).json({
