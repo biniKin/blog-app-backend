@@ -23,13 +23,15 @@ const signUp = async(req, res) => {
             user_id,
             name,
             email,
-            hashed_password
+            password: hashed_password
         }
+
+        console.log(new_user);
         await createNewUser(new_user);
 
         const token = jwt.sign({uid: user_id},process.env.JWT_SECRET, {expiresIn: "1d"});
 
-        res.status(200).json({
+        res.status(201).json({
             message: "Account created sucessfully!",
             token,
         });
@@ -81,6 +83,10 @@ const signIn = async(req, res) => {
             error: "Error occured. Try again"
         });
     }
+}
+
+module.exports = {
+    signIn, signUp
 }
 
 // res.json()
