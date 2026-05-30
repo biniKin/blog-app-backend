@@ -92,6 +92,17 @@ const signIn = async(req, res) => {
     }
 }
 
+const logout = async(req, res) => {
+    try{
+        
+    }catch(e){
+        console.log(`error on log out: ${e}`);
+        res.status(500).json({
+            error: "Error on server."
+        })
+    }
+}
+
 module.exports = {
     signIn, signUp
 }

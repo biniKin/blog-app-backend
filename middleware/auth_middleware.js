@@ -35,3 +35,5 @@ const authMiddleware = (req, res, next) => {
 }
 
 module.exports = {authMiddleware};
+
+// - future: handle refresh and access token
