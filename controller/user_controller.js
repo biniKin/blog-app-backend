@@ -36,11 +36,13 @@ const signUp = async(req, res) => {
         }
         await createNewUser(new_user);
 
-        const token = jwt.sign({uid: user_id},process.env.JWT_SECRET, {expiresIn: "1d"});
+        const access_token = jwt.sign({uid: user_id},process.env.JWT_SECRET, {expiresIn: "1m"});
+        const refresh_token = jwt.sign({uid: user_id},process.env.JWT_SECRET, {expiresIn: "30d"});
 
         res.status(201).json({
             message: "Account created sucessfully!",
-            token,
+            accessToken: access_token,
+            refreshToken: refresh_token,
         });
     }catch(e){
         console.log(`error on account creation: ${e}`);
@@ -77,11 +79,13 @@ const signIn = async(req, res) => {
         }
 
         // JWT comes to picture
-        const token = jwt.sign({uid: user.user_id},process.env.JWT_SECRET, {expiresIn: "1d"});
+        const access_token = jwt.sign({uid: user.user_id},process.env.JWT_SECRET, {expiresIn: "1m"});
+        const refresh_token = jwt.sign({uid: user.user_id}, process.env.JWT_SECRET, {expiresIn: "30d"});
         
         res.status(200).json({
             message: "Logged in succesfully",
-            token
+            accessToken: access_token,
+            refreshToken: refresh_token
         });
 
     }catch(e){
@@ -103,8 +107,34 @@ const logout = async(req, res) => {
     }
 }
 
+
+const refresh = async(req, res) => {
+    try{
+        const {refreshToken} = req.body;
+
+        if(!refreshToken){
+            return res.status(401).json({
+                error: "Refresh Token not provided"
+            });
+        }
+
+        const decode = jwt.verify(refreshToken, process.env.JWT_SECRET);
+
+        const newAccessToken = jwt.sign({uid: decode.uid}, process.env.JWT_SECRET, {expiresIn: "1m"});
+
+        res.status(200).json({
+            accessToken: newAccessToken
+        });
+    }catch(e){
+        console.log(`error on refresh controller: ${e}`);
+        res.status(401).json({
+            error: "Error occurred on refrshing token"
+        });
+    }
+}
+
 module.exports = {
-    signIn, signUp
+    signIn, signUp, refresh
 }
 
 // res.json()
