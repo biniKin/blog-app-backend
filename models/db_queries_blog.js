@@ -22,13 +22,14 @@ const { pool } = require("../db/pg_setup");
 
 // create blog
 // The curly braces { } in the arguments mean "destructuring"
+// Standard INSERT query returns the number of rows affected, not the data.
 async function createBlog({id, user_id, title, content}) {
-    // TODO: go to blog table inseart it.
     try{
         const result = await pool.query(
             `
             INSERT INTO blogs (id, user_id, title, content)
             VALUES ($1, $2, $3, $4)
+            RETURNING *; 
             `,
             [id, user_id, title, content]
         );
